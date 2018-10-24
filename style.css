@@ -1,0 +1,81 @@
+.tic-tac-toe-board {
+  display: flex;
+  flex-flow: column;
+  height: 300px;
+  width: 300px;
+}
+
+.divider-row {
+  background: black;
+  flex: 0 0 5px;
+  border-radius: 10px;
+}
+
+.row {
+  flex: 1 0 30px;
+  display: flex;
+}
+
+.square {
+  flex: 1 0 30px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+}
+
+.square > span {
+  font-size: 4.5rem;
+}
+
+.square > * {
+  flex: 1;
+}
+
+.square:hover {
+  background: green;
+}
+
+.upright-divider {
+  background: black;
+  flex: 0 0 5px;
+}
+
+.upper-divider {
+  border-radius: 10px 10px 0px 0px;
+}
+
+.lower-divider {
+  border-radius: 0px 0px 10px 10px;
+}
+
+.taken:hover {
+  background: red;
+  cursor: not-allowed;
+}
+
+.invisible {
+  display: none;
+}
+
+.visible {
+/*   background: orange; */
+}
+
+/* .square:hover .invisible:nth-child(1) {
+  display: inline;
+} */
+
+.reset {
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+#games {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+}
+
+.winner {
+  background: gold;
+}
