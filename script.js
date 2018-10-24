@@ -1,4 +1,5 @@
-const boards = document.getElementsByClassName('tic-tac-toe-board')
+const games = {
+};
 
 class ticTacToe {
   constructor(piece) {
@@ -61,14 +62,17 @@ class ticTacToe {
   }
 }
 
-const games = {
-};
-let game = new ticTacToe();
+
 
 const create_game = () => {
   let game = new ticTacToe();
   let newID = Object.keys(games).length;
-  document.getElementById('games').appendChild(generateBoard(newID));
+  const newBoard = generateBoard(newID);
+  console.log('NEW BOARD: ', newBoard);
+  newBoard.addEventListener('click', gameboards);
+  newBoard.addEventListener('mouseover', showPreview);
+  newBoard.addEventListener('mouseout', hidePreview);
+  document.getElementById('games').appendChild(newBoard);
   games[`tic-tac-toe-board-${newID}`] = game;
 }
 
@@ -221,9 +225,3 @@ const generateBoard = (id) => {
 create_game();
 create_game();
 create_game();
-
-Array.from(boards).forEach(function(e) {
-  e.addEventListener('click', gameboards);
-  e.addEventListener('mouseover', showPreview);
-  e.addEventListener('mouseout', hidePreview);
-});
