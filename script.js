@@ -60,6 +60,9 @@ class ticTacToe {
     }
     return winning;
   }
+  gameOver() {
+    this.gameover = !this.gameover;
+  }
 }
 
 
@@ -68,11 +71,11 @@ const create_game = () => {
   let game = new ticTacToe();
   let newID = Object.keys(games).length;
   const newBoard = generateBoard(newID);
-  console.log('NEW BOARD: ', newBoard);
+  // console.log('NEW BOARD: ', newBoard);
   newBoard.addEventListener('click', gameboards);
   newBoard.addEventListener('mouseover', showPreview);
   newBoard.addEventListener('mouseout', hidePreview);
-  document.getElementById('games').appendChild(newBoard);
+  document.getElementById('games').prepend(newBoard);
   games[`tic-tac-toe-board-${newID}`] = game;
 }
 
@@ -97,8 +100,12 @@ const setPiece = (square, game) => {
   square.classList.toggle('temp');  
   square.classList.toggle('visible');  
   square.parentNode.classList.toggle('taken');
-  game.setPiece(square.parentNode.classList[1].slice(6)); 
-  console.log('valid move', game);
+  if (game.checkWinningMoves(square.parentNode.classList[1].slice(6)).length > 0) {
+    console.log('WINNER')
+    game.gameOver();
+    console.log(game)
+  };
+  game.setPiece(square.parentNode.classList[1].slice(6));
 }
 
 const reset = (boardID) => {
@@ -107,6 +114,7 @@ const reset = (boardID) => {
   for (var x=0; x<unset.length;) {
     if (unset[x].parentNode.parentNode.parentNode.id === boardID) {
       unset[x].parentNode.classList.toggle('taken');
+      unset[x].parentNode.classList.remove('winner');
       unset[x].classList.toggle('invisible');
       unset[x].classList.toggle('visible');
     } else {
@@ -119,6 +127,7 @@ const showPreview = (e) => {
   const square = e.target;
   const gameID = e.path !== undefined ? e.path[2].id : e.composedPath()[2].id;
   const game = games[gameID];
+  // console.log(game);
   if (square.classList[0] === 'square' && game.gameover === false) {
     let winning = game.checkWinningMoves(square.classList[1].slice(6));
     if (winning.length > 0) {
@@ -222,6 +231,8 @@ const generateBoard = (id) => {
   return board;
 }
 
+document.getElementById('new-game').addEventListener('click',e=>create_game());
+
 create_game();
-create_game();
-create_game();
+// create_game();
+// create_game();
