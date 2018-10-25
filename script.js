@@ -173,6 +173,21 @@ const hidePreview = (e) => {
   }
 }
 
+const addPlayerToScoreBoard = (playerID) => {
+  let newPlayer = document.createElement('tr');
+  newPlayer.innerHTML = (
+    `
+    <tr>
+      <td id="name-${playerID}">${players[playerID].name}</td>
+      <td id="score-${playerID}">${players[playerID].score}</td>
+      <td id="x-wins-${playerID}">${players[playerID].X}</td>
+      <td id="o-wins-${playerID}">${players[playerID].O}</td>
+    </tr>
+    `
+  );
+  document.getElementById('scoreboard').children[1].append(newPlayer);
+}
+
 const updateScoreBoard = (winner) => {
   console.log(players, winner);
   players[winner.player].score ++;
@@ -180,12 +195,14 @@ const updateScoreBoard = (winner) => {
   players[winner.player].games.push(winner.board);
   //id01: {name:'O', score:0, O:0, X:0, games:[]},
   document.getElementById(`score-${winner.player}`).innerText = players[winner.player].score;
+  document.getElementById(`${String.toLowerCase(winner.piece)}-wins-${winner.player}`).innerText = players[winner.player][winner.piece];
 }
 
 const createPlayer = (name) => {
   const playerID = `id${Object.keys(players).length}`; 
   players[playerID] = {score: 0, O:0, X:0, games:[]};
   players[playerID].name = name;
+  addPlayerToScoreBoard(playerID);
 }
 
 const updateUserName = (name, playerID) => {
