@@ -1,9 +1,13 @@
 const games = {
 };
+const players = {
+}
 
 class ticTacToe {
-  constructor(piece) {
+  constructor(playerO, playerX, piece) {
     piece === 1 ? piece = 1 : piece = 0;
+    playerO === undefined ? playerO = '0' : playerO;
+    playerX === undefined ? playerX = '1' : playerX;
     this.piece = piece;
     this.board = [
       null,null,null,
@@ -11,6 +15,8 @@ class ticTacToe {
       null,null,null
     ];
     this.gameover = false;
+    this.playerO=playerO;
+    this.playerX=playerX;
   }
   getPiece() {
     return this.piece;
@@ -18,6 +24,9 @@ class ticTacToe {
   setPiece(square) {
     this.updateBoard(square);
     this.piece === 0 ? this.piece = 1 : this.piece = 0;
+  }
+  getPlayers(){
+    return [this.playerO, this.playerX];
   }
   updateBoard(square) {
     this.board[square] = this.piece;
@@ -62,16 +71,22 @@ class ticTacToe {
   }
   gameOver() {
     this.gameover = !this.gameover;
+    this.setPiece();
+  }
+  updateScoreBoard() {
+    this.setPiece();
+    let winning = {};
+    winning.player = this.piece === 0 ? this.playerO : this.playerX;
+    winning.piece = this.piece === 0 ? 'O' : 'X';
+    winning.board = this.board;
+    return winning;
   }
 }
 
-
-
-const create_game = () => {
-  let game = new ticTacToe();
+const createGame = () => {
+  let game = new ticTacToe('id0', 'id1');
   let newID = Object.keys(games).length;
   const newBoard = generateBoard(newID);
-  // console.log('NEW BOARD: ', newBoard);
   newBoard.addEventListener('click', gameboards);
   newBoard.addEventListener('mouseover', showPreview);
   newBoard.addEventListener('mouseout', hidePreview);
@@ -82,11 +97,7 @@ const create_game = () => {
 const gameboards = (e) => {
   const gameID = e.path !== undefined ? e.path[3].id : e.composedPath()[3].id;
   if (e.target.classList[0] === 'temp' && games[gameID].gameover === false) {
-    // console.log(e.path)
-    // console.log(games[e.path[3].id]);
     setPiece(e.target, games[gameID]);
-  } else {
-    console.log('invalid move');
   }
   if (e.target.classList.value === 'reset') {
     const resetGameID = e.path !== undefined ? e.path[1].id : e.composedPath()[1].id;
@@ -95,22 +106,22 @@ const gameboards = (e) => {
 }
 
 const setPiece = (square, game) => {
-  // console.log(square.parentNode.classList[1].slice(6), game);
-  // square.children[game.getPiece()].classList.toggle('invisible');
   square.classList.toggle('temp');  
   square.classList.toggle('visible');  
   square.parentNode.classList.toggle('taken');
   if (game.checkWinningMoves(square.parentNode.classList[1].slice(6)).length > 0) {
     console.log('WINNER')
     game.gameOver();
-    console.log(game)
+    let winner;
+    updateScoreBoard(game.updateScoreBoard());
   };
   game.setPiece(square.parentNode.classList[1].slice(6));
 }
 
 const reset = (boardID) => {
   const unset = document.getElementsByClassName('visible');
-  games[boardID] = new ticTacToe();
+  let players = games[boardID].getPlayers();
+  games[boardID] = new ticTacToe(players[0], players[1]);
   for (var x=0; x<unset.length;) {
     if (unset[x].parentNode.parentNode.parentNode.id === boardID) {
       unset[x].parentNode.classList.toggle('taken');
@@ -127,17 +138,11 @@ const showPreview = (e) => {
   const square = e.target;
   const gameID = e.path !== undefined ? e.path[2].id : e.composedPath()[2].id;
   const game = games[gameID];
-  // console.log(game);
   if (square.classList[0] === 'square' && game.gameover === false) {
     let winning = game.checkWinningMoves(square.classList[1].slice(6));
-    if (winning.length > 0) {
-      // e.target.classList.toggle('winner');
-    }
-    // console.log(winning);
     winning.forEach(winner => {
       if(Array.isArray(winner)) {
         winner.forEach(otherSquare=>{
-          // console.log(otherSquare)
           const gamename = e.path !== undefined ? e.path[2] : e.composedPath()[2];
           if (otherSquare ===0)gamename.children[0].children[0].classList.toggle('winner');
           if (otherSquare ===1)gamename.children[0].children[2].classList.toggle('winner');
@@ -151,7 +156,6 @@ const showPreview = (e) => {
         })
       }
     })
-    // console.log(winning);
     square.children[game.getPiece()].classList.toggle('invisible');
     square.children[game.getPiece()].classList.toggle('temp');
   }
@@ -167,6 +171,25 @@ const hidePreview = (e) => {
     square.classList.toggle('invisible');
     square.classList.toggle('temp');
   }
+}
+
+const updateScoreBoard = (winner) => {
+  console.log(players, winner);
+  players[winner.player].score ++;
+  players[winner.player][winner.piece]++;
+  players[winner.player].games.push(winner.board);
+  //id01: {name:'O', score:0, O:0, X:0, games:[]},
+  document.getElementById(`score-${winner.player}`).innerText = players[winner.player].score;
+}
+
+const createPlayer = (name) => {
+  const playerID = `id${Object.keys(players).length}`; 
+  players[playerID] = {score: 0, O:0, X:0, games:[]};
+  players[playerID].name = name;
+}
+
+const updateUserName = (name, playerID) => {
+  players[playerID].name = name;
 }
 
 const generateBoard = (id) => {
@@ -231,8 +254,8 @@ const generateBoard = (id) => {
   return board;
 }
 
-document.getElementById('new-game').addEventListener('click',e=>create_game());
+document.getElementById('new-game').addEventListener('click',e=>createGame());
 
-create_game();
-// create_game();
-// create_game();
+createGame();
+createPlayer('O');
+createPlayer('X');
