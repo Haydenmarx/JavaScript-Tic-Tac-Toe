@@ -86,7 +86,7 @@ class ticTacToe {
 const createGame = () => {
   let game = new ticTacToe('id0', 'id1');
   let newID = Object.keys(games).length;
-  const newBoard = generateBoard(newID);
+  const newBoard = generateBoard(newID, players['id0'].name);
   newBoard.addEventListener('click', gameboards);
   newBoard.addEventListener('mouseover', showPreview);
   newBoard.addEventListener('mouseout', hidePreview);
@@ -115,9 +115,12 @@ const setPiece = (square, game, gameBoard) => {
     toggleBoardClasses(gameBoard, checkWinning, ['won'], ['winner'])
     game.gameOver();
     let winner;
+    gameBoard.children[0].children[0].children[1].innerText = 'Won!';
     updateScoreBoard(game.updateScoreBoard());
-  };
-  game.setPiece(square.parentNode.classList[1].slice(6));
+  } else {
+    game.setPiece(square.parentNode.classList[1].slice(6));
+    gameBoard.children[0].children[0].firstChild.innerText = players[game.getPlayers()[game.getPiece()]].name;
+  }
 }
 
 const reset = (boardID) => {
@@ -152,41 +155,41 @@ const toggleBoardClasses = (selectedGame, matrix, add=['void'], remove=['void'])
   matrix.forEach(arr => {
     if(Array.isArray(arr)) {
       arr.forEach(square => {
-        if (square ===0) {
-          selectedGame.children[0].children[0].classList.add(...add);
-          selectedGame.children[0].children[0].classList.remove(...remove);
+        if (square === 0) {
+          selectedGame.children[1].children[0].classList.add(...add);
+          selectedGame.children[1].children[0].classList.remove(...remove);
         }
-        if (square ===1) {
-          selectedGame.children[0].children[2].classList.add(...add);
-          selectedGame.children[0].children[2].classList.remove(...remove);
+        if (square === 1) {
+          selectedGame.children[1].children[2].classList.add(...add);
+          selectedGame.children[1].children[2].classList.remove(...remove);
         }
-        if (square ===2) {
-          selectedGame.children[0].children[4].classList.add(...add);
-          selectedGame.children[0].children[4].classList.remove(...remove);
+        if (square === 2) {
+          selectedGame.children[1].children[4].classList.add(...add);
+          selectedGame.children[1].children[4].classList.remove(...remove);
         }
-        if (square ===3) {
-          selectedGame.children[2].children[0].classList.add(...add);
-          selectedGame.children[2].children[0].classList.remove(...remove);
+        if (square === 3) {
+          selectedGame.children[3].children[0].classList.add(...add);
+          selectedGame.children[3].children[0].classList.remove(...remove);
         }
-        if (square ===4) {
-          selectedGame.children[2].children[2].classList.add(...add);
-          selectedGame.children[2].children[2].classList.remove(...remove);
+        if (square === 4) {
+          selectedGame.children[3].children[2].classList.add(...add);
+          selectedGame.children[3].children[2].classList.remove(...remove);
         }
-        if (square ===5) {
-          selectedGame.children[2].children[4].classList.add(...add);
-          selectedGame.children[2].children[4].classList.remove(...remove);
+        if (square === 5) {
+          selectedGame.children[3].children[4].classList.add(...add);
+          selectedGame.children[3].children[4].classList.remove(...remove);
         }
-        if (square ===6) {
-          selectedGame.children[4].children[0].classList.add(...add);
-          selectedGame.children[4].children[0].classList.remove(...remove);
+        if (square === 6) {
+          selectedGame.children[5].children[0].classList.add(...add);
+          selectedGame.children[5].children[0].classList.remove(...remove);
         }
-        if (square ===7) {
-          selectedGame.children[4].children[2].classList.add(...add);
-          selectedGame.children[4].children[2].classList.remove(...remove);
+        if (square === 7) {
+          selectedGame.children[5].children[2].classList.add(...add);
+          selectedGame.children[5].children[2].classList.remove(...remove);
         }
-        if (square ===8) {
-          selectedGame.children[4].children[4].classList.add(...add);
-          selectedGame.children[4].children[4].classList.remove(...remove);
+        if (square === 8) {
+          selectedGame.children[5].children[4].classList.add(...add);
+          selectedGame.children[5].children[4].classList.remove(...remove);
         }
       })
     }
@@ -240,13 +243,13 @@ const updateUserName = (name, playerID) => {
   players[playerID].name = name;
 }
 
-const generateBoard = (id) => {
+const generateBoard = (id, player1) => {
   let board = document.createElement('div');
   board.id = `tic-tac-toe-board-${id}`;
   board.classList.toggle('tic-tac-toe-board');
   board.innerHTML =   (
     `
-    <div class="banner"><h2>Player Name's Turn</h2></div>
+    <div class="banner"><h2><span>${player1}</span>'s <span>Turn</span></h2></div>
     <div class=row>
       <div class="square square0">
         <span class="invisible">O</span>
@@ -306,6 +309,6 @@ const generateBoard = (id) => {
 
 document.getElementById('new-game').addEventListener('click',e=>createGame());
 
-createGame();
 createPlayer('O');
 createPlayer('X');
+createGame();
