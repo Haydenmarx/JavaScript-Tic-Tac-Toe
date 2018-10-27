@@ -112,3 +112,15 @@ tfoot {
 .banner > h2 {
   margin: 0px;
 }
+
+.player-select-caption {
+  margin: 65px 0px 5px 20px;
+}
+
+.player-select-dropdown {
+  margin: 0px 20px;
+}
+
+.start {
+  margin-top: auto;
+}

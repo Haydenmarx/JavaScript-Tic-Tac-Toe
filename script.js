@@ -81,15 +81,21 @@ class ticTacToe {
   }
 }
 
-const createGame = (player1='id0', player2='id1') => {
-  let game = new ticTacToe(player1, player2);
+const selectPlayers = () => {
   let newID = Object.keys(games).length;
-  const newBoard = generateBoard(newID, players[player1].name);
+  const newBoard = generatePlayerSelection(newID);
   newBoard.addEventListener('click', gameboards);
   newBoard.addEventListener('mouseover', showPreview);
   newBoard.addEventListener('mouseout', hidePreview);
   document.getElementById('games').prepend(newBoard);
-  games[`tic-tac-toe-board-${newID}`] = game;
+  games[`tic-tac-toe-board-${newID}`] = null;
+}
+
+const createGame = (board, player1, player2) => {
+  let game = new ticTacToe(player1, player2);
+  generateBoard(board, players[player1].name);
+  games[board.id] = game;
+  console.log(games);
 }
 
 const gameboards = (e) => {
@@ -99,14 +105,13 @@ const gameboards = (e) => {
     setPiece(e.target, games[gameID], gameBoard);
   }
   if (e.target.classList.contains('quit')) {
-    // const resetGameID = e.path !== undefined ? e.path[1].id : e.composedPath()[1].id;
-    // reset(resetGameID);
-    // add
     endGame(games[e.target.parentNode.id], e.target.parentNode);
-    // endGame = (game, gameBoard, winningMoves=[]) => {
   }
   if (e.target.classList.contains('close')) {
     hideBoard(e.target.parentNode);
+  }
+  if (e.target.classList.contains('start')) {
+    createGame(e.target.parentNode, e.target.parentNode.children[1].value, e.target.parentNode.children[3].value);
   }
 }
 
@@ -264,10 +269,7 @@ const updateUserName = (name, playerID) => {
   players[playerID].name = name;
 }
 
-const generateBoard = (id, player1) => {
-  let board = document.createElement('div');
-  board.id = `tic-tac-toe-board-${id}`;
-  board.classList.toggle('tic-tac-toe-board');
+const generateBoard = (board, player1) => {
   board.innerHTML =   (
     `
     <div class="banner"><h2><span>${player1}</span>'s <span>Turn</span></h2></div>
@@ -328,8 +330,33 @@ const generateBoard = (id, player1) => {
   return board;
 }
 
-document.getElementById('new-game').addEventListener('click',e=>createGame());
+const generatePlayerSelection = (id) => {
+  let board = document.createElement('div');
+  board.id = `tic-tac-toe-board-${id}`;
+  board.classList.toggle('tic-tac-toe-board');
+  board.innerHTML = (
+    `
+    <h3 class="player-select-caption">O (Moves First):</h3>
+    <select class="player-select-dropdown">
+        <option value="id0">Player 1</option>
+        <option value="id1">Player 2</option>
+        <option value="id2">Player 3</option>
+    </select>
+    <h3  class="player-select-caption">X (Moves Second):</h3>
+    <select class="player-select-dropdown">
+    <option value="id0">Player 1</option>
+    <option value="id1">Player 2</option>
+    <option value="id2">Player 3</option>
+    </select>
+    <button class="start">Start</button>
+    `
+  );
+  return board;
+}
 
-createPlayer('O');
-createPlayer('X');
-createGame();
+document.getElementById('new-game').addEventListener('click',e=>selectPlayers());
+
+createPlayer('Player 1');
+createPlayer('Player 2');
+createPlayer('Player 3');
+selectPlayers();
