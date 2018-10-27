@@ -20,7 +20,7 @@ class ticTacToe {
     return this.piece;
   }
   setPiece(square) {
-    this.updateBoard(square);
+    if (square !== undefined) this.updateBoard(square);
     this.piece === 0 ? this.piece = 1 : this.piece = 0;
   }
   getPlayers(){
@@ -102,6 +102,8 @@ const gameboards = (e) => {
     // const resetGameID = e.path !== undefined ? e.path[1].id : e.composedPath()[1].id;
     // reset(resetGameID);
     // add
+    endGame(games[e.target.parentNode.id], e.target.parentNode);
+    // endGame = (game, gameBoard, winningMoves=[]) => {
   }
   if (e.target.classList.contains('close')) {
     hideBoard(e.target.parentNode);
@@ -114,15 +116,26 @@ const setPiece = (square, game, gameBoard) => {
   square.parentNode.classList.toggle('taken');
   const checkWinning = game.checkWinningMoves(square.parentNode.classList[1].slice(6));
   if (checkWinning.length > 0) {
-    toggleBoardClasses(gameBoard, checkWinning, ['won'], ['winner'])
-    game.gameOver();
-    let winner;
-    gameBoard.children[0].children[0].children[1].innerText = 'Won!';
-    updateScoreBoard(game.updateScoreBoard());
+    endGame(game, gameBoard, checkWinning);
   } else {
     game.setPiece(square.parentNode.classList[1].slice(6));
     gameBoard.children[0].children[0].firstChild.innerText = players[game.getPlayers()[game.getPiece()]].name;
   }
+}
+
+const endGame = (game, gameBoard, winningMoves=[]) => {
+  game.gameOver();
+  if (winningMoves.length > 0) {
+    toggleBoardClasses(gameBoard, winningMoves, ['won'], ['winner']);
+    gameBoard.children[0].children[0].children[1].innerText = 'Won!';
+    updateScoreBoard(game.updateScoreBoard());
+  } else {
+    gameBoard.children[0].children[0].children[1].innerText = 'Forfeited!';
+    game.setPiece();
+  }
+  updateScoreBoard(game.updateScoreBoard());
+  gameBoard.children[6].classList.add('invisible');
+  gameBoard.children[7].classList.remove('invisible');
 }
 
 const reset = (boardID) => {

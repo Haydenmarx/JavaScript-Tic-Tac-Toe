@@ -65,7 +65,7 @@
   display: inline;
 } */
 
-.reset, .quit {
+.close, .quit {
   margin-top: 5px;
   cursor: pointer;
 }
