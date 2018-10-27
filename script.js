@@ -1,7 +1,5 @@
-const games = {
-};
-const players = {
-}
+const games = {};
+const players = {};
 
 class ticTacToe {
   constructor(playerO, playerX, piece) {
@@ -100,9 +98,13 @@ const gameboards = (e) => {
     const gameBoard = e.path !== undefined ? e.path[3] : e.composedPath()[3];
     setPiece(e.target, games[gameID], gameBoard);
   }
-  if (e.target.classList.value === 'reset') {
-    const resetGameID = e.path !== undefined ? e.path[1].id : e.composedPath()[1].id;
-    reset(resetGameID);
+  if (e.target.classList.contains('quit')) {
+    // const resetGameID = e.path !== undefined ? e.path[1].id : e.composedPath()[1].id;
+    // reset(resetGameID);
+    // add
+  }
+  if (e.target.classList.contains('close')) {
+    hideBoard(e.target.parentNode);
   }
 }
 
@@ -136,6 +138,13 @@ const reset = (boardID) => {
       x++;
     }
   }
+}
+
+const hideBoard = (board) => {
+  board.removeEventListener('click', gameboards);
+  board.removeEventListener('mouseover', showPreview);
+  board.removeEventListener('mouseout', hidePreview);
+  board.classList.add('invisible');
 }
 
 const showPreview = (e) => {
@@ -300,8 +309,8 @@ const generateBoard = (id, player1) => {
         <span class="invisible">X</span>
       </div>
     </div>
-    <button class="reset">QUIT</button>
-    <button class="quit invisible">CLOSE</button>
+    <button class="quit">QUIT</button>
+    <button class="close invisible">CLOSE</button>
     `
   )
   return board;
