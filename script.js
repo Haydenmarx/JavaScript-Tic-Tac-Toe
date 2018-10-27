@@ -81,10 +81,10 @@ class ticTacToe {
   }
 }
 
-const createGame = () => {
-  let game = new ticTacToe('id0', 'id1');
+const createGame = (player1='id0', player2='id1') => {
+  let game = new ticTacToe(player1, player2);
   let newID = Object.keys(games).length;
-  const newBoard = generateBoard(newID, players['id0'].name);
+  const newBoard = generateBoard(newID, players[player1].name);
   newBoard.addEventListener('click', gameboards);
   newBoard.addEventListener('mouseover', showPreview);
   newBoard.addEventListener('mouseout', hidePreview);
@@ -128,7 +128,6 @@ const endGame = (game, gameBoard, winningMoves=[]) => {
   if (winningMoves.length > 0) {
     toggleBoardClasses(gameBoard, winningMoves, ['won'], ['winner']);
     gameBoard.children[0].children[0].children[1].innerText = 'Won!';
-    updateScoreBoard(game.updateScoreBoard());
   } else {
     gameBoard.children[0].children[0].children[1].innerText = 'Forfeited!';
     game.setPiece();
