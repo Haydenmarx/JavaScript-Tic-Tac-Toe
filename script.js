@@ -246,6 +246,7 @@ const generateBoard = (id) => {
   board.classList.toggle('tic-tac-toe-board');
   board.innerHTML =   (
     `
+    <div class="banner"><h2>Player Name's Turn</h2></div>
     <div class=row>
       <div class="square square0">
         <span class="invisible">O</span>
@@ -296,7 +297,8 @@ const generateBoard = (id) => {
         <span class="invisible">X</span>
       </div>
     </div>
-    <button class="reset">RESET</button>
+    <button class="reset">QUIT</button>
+    <button class="quit invisible">CLOSE</button>
     `
   )
   return board;
