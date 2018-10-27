@@ -97,7 +97,8 @@ const createGame = () => {
 const gameboards = (e) => {
   const gameID = e.path !== undefined ? e.path[3].id : e.composedPath()[3].id;
   if (e.target.classList[0] === 'temp' && games[gameID].gameover === false) {
-    setPiece(e.target, games[gameID]);
+    const gameBoard = e.path !== undefined ? e.path[3] : e.composedPath()[3];
+    setPiece(e.target, games[gameID], gameBoard);
   }
   if (e.target.classList.value === 'reset') {
     const resetGameID = e.path !== undefined ? e.path[1].id : e.composedPath()[1].id;
@@ -105,12 +106,13 @@ const gameboards = (e) => {
   }
 }
 
-const setPiece = (square, game) => {
+const setPiece = (square, game, gameBoard) => {
   square.classList.toggle('temp');  
   square.classList.toggle('visible');  
   square.parentNode.classList.toggle('taken');
-  if (game.checkWinningMoves(square.parentNode.classList[1].slice(6)).length > 0) {
-    console.log('WINNER')
+  const checkWinning = game.checkWinningMoves(square.parentNode.classList[1].slice(6));
+  if (checkWinning.length > 0) {
+    toggleBoardClasses(gameBoard, checkWinning, ['won'], ['winner'])
     game.gameOver();
     let winner;
     updateScoreBoard(game.updateScoreBoard());
@@ -124,8 +126,7 @@ const reset = (boardID) => {
   games[boardID] = new ticTacToe(players[0], players[1]);
   for (var x=0; x<unset.length;) {
     if (unset[x].parentNode.parentNode.parentNode.id === boardID) {
-      unset[x].parentNode.classList.toggle('taken');
-      unset[x].parentNode.classList.remove('winner');
+      unset[x].parentNode.classList.remove('taken', 'winner', 'won');
       unset[x].classList.toggle('invisible');
       unset[x].classList.toggle('visible');
     } else {
@@ -139,26 +140,57 @@ const showPreview = (e) => {
   const gameID = e.path !== undefined ? e.path[2].id : e.composedPath()[2].id;
   const game = games[gameID];
   if (square.classList[0] === 'square' && game.gameover === false) {
-    let winning = game.checkWinningMoves(square.classList[1].slice(6));
-    winning.forEach(winner => {
-      if(Array.isArray(winner)) {
-        winner.forEach(otherSquare=>{
-          const gamename = e.path !== undefined ? e.path[2] : e.composedPath()[2];
-          if (otherSquare ===0)gamename.children[0].children[0].classList.toggle('winner');
-          if (otherSquare ===1)gamename.children[0].children[2].classList.toggle('winner');
-          if (otherSquare ===2)gamename.children[0].children[4].classList.toggle('winner');
-          if (otherSquare ===3)gamename.children[2].children[0].classList.toggle('winner');
-          if (otherSquare ===4)gamename.children[2].children[2].classList.toggle('winner');
-          if (otherSquare ===5)gamename.children[2].children[4].classList.toggle('winner');
-          if (otherSquare ===6)gamename.children[4].children[0].classList.toggle('winner');
-          if (otherSquare ===7)gamename.children[4].children[2].classList.toggle('winner');
-          if (otherSquare ===8)gamename.children[4].children[4].classList.toggle('winner');
-        })
-      }
-    })
+    const winning = game.checkWinningMoves(square.classList[1].slice(6));
+    const gamename = e.path !== undefined ? e.path[2] : e.composedPath()[2];
+    toggleBoardClasses(gamename, winning, ['winner']);
     square.children[game.getPiece()].classList.toggle('invisible');
     square.children[game.getPiece()].classList.toggle('temp');
   }
+}
+
+const toggleBoardClasses = (selectedGame, matrix, add=['void'], remove=['void']) => {
+  matrix.forEach(arr => {
+    if(Array.isArray(arr)) {
+      arr.forEach(square => {
+        if (square ===0) {
+          selectedGame.children[0].children[0].classList.add(...add);
+          selectedGame.children[0].children[0].classList.remove(...remove);
+        }
+        if (square ===1) {
+          selectedGame.children[0].children[2].classList.add(...add);
+          selectedGame.children[0].children[2].classList.remove(...remove);
+        }
+        if (square ===2) {
+          selectedGame.children[0].children[4].classList.add(...add);
+          selectedGame.children[0].children[4].classList.remove(...remove);
+        }
+        if (square ===3) {
+          selectedGame.children[2].children[0].classList.add(...add);
+          selectedGame.children[2].children[0].classList.remove(...remove);
+        }
+        if (square ===4) {
+          selectedGame.children[2].children[2].classList.add(...add);
+          selectedGame.children[2].children[2].classList.remove(...remove);
+        }
+        if (square ===5) {
+          selectedGame.children[2].children[4].classList.add(...add);
+          selectedGame.children[2].children[4].classList.remove(...remove);
+        }
+        if (square ===6) {
+          selectedGame.children[4].children[0].classList.add(...add);
+          selectedGame.children[4].children[0].classList.remove(...remove);
+        }
+        if (square ===7) {
+          selectedGame.children[4].children[2].classList.add(...add);
+          selectedGame.children[4].children[2].classList.remove(...remove);
+        }
+        if (square ===8) {
+          selectedGame.children[4].children[4].classList.add(...add);
+          selectedGame.children[4].children[4].classList.remove(...remove);
+        }
+      })
+    }
+  })
 }
 
 const hidePreview = (e) => {
@@ -189,7 +221,6 @@ const addPlayerToScoreBoard = (playerID) => {
 }
 
 const updateScoreBoard = (winner) => {
-  console.log(players, winner);
   players[winner.player].score ++;
   players[winner.player][winner.piece]++;
   players[winner.player].games.push(winner.board);
