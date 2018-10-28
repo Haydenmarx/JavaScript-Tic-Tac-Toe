@@ -6,23 +6,27 @@
   <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-  <table id="scoreboard">
-    <thead>
-      <tr>
-        <th colspan="4">Score Board</th>
-      </tr>
-    </thead>
-    <tr>
-      <th>Name</th>
-      <th>Score</th>
-      <th>X Wins</th>
-      <th>O Wins</th>
-    </tr>
-  </table>
-  <button id="new-game">Add a Game</button>
-  <input id="player-name" />
-  <button id="new-player">Add a Player</button>   
-  <div id="games">
+  <div>
+    <div id="games">
+      <button id="new-game">Add a Game</button>
+    </div>
+    <div>
+      <button>Show Scoreboard</button>
+      <button>Hide Scoreboard</button>
+      <table id="scoreboard">
+          <thead>
+            <tr>
+              <th colspan="4">Score Board</th>
+            </tr>
+          </thead>
+          <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>X Wins</th>
+            <th>O Wins</th>
+          </tr>
+        </table>
+    </div>
   </div>
 </body>
 <script type="text/javascript" src="script.js"></script> 

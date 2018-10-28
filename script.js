@@ -87,7 +87,11 @@ const selectPlayers = () => {
   newBoard.addEventListener('click', gameboards);
   newBoard.addEventListener('mouseover', showPreview);
   newBoard.addEventListener('mouseout', hidePreview);
-  document.getElementById('games').prepend(newBoard);
+  if (Object.keys(games).length < 1) {
+    document.getElementById('games').insertBefore(newBoard, document.getElementById('games')[0])
+  } else {
+    document.getElementById('games').insertBefore(newBoard, document.getElementById('games').children[1])
+  }
   games[`tic-tac-toe-board-${newID}`] = null;
 }
 
@@ -111,7 +115,18 @@ const gameboards = (e) => {
     hideBoard(e.target.parentNode);
   }
   if (e.target.classList.contains('start')) {
-    createGame(e.target.parentNode, e.target.parentNode.children[1].value, e.target.parentNode.children[3].value);
+    console.log(e.target.parentNode.children)
+    createGame(e.target.parentNode, e.target.parentNode.children[3].value, e.target.parentNode.children[5].value);
+  }
+  if (e.target.classList.contains('new-player')) {
+    const name = e.target.previousElementSibling;
+    if (name.value) {
+      createPlayer(name.value);
+      name.classList.remove('missing-information');
+      name.value = '';
+    } else {
+      name.classList.add('missing-information');
+    }
   }
 }
 
@@ -338,12 +353,13 @@ const generatePlayerSelection = (id) => {
   const player1 = document.createElement('h3');
   player1.classList.add('player-select-caption');
   player1.innerText = 'O (Moves First):';
-  player2 = player1.cloneNode(true);
+  const player2 = player1.cloneNode(true);
   player2.innerText = 'X (Moves Second):';
   const dropdown = document.createElement('select');
   dropdown.classList.add('player-select-dropdown');
+  let newPlayer;
   Object.keys(players).forEach(player=>{
-    const newPlayer = document.createElement('option');
+    newPlayer = document.createElement('option');
     newPlayer.value = player;
     newPlayer.innerText = players[player].name;
     dropdown.append(newPlayer);
@@ -351,9 +367,16 @@ const generatePlayerSelection = (id) => {
   const startButton = document.createElement('button');
   startButton.classList.add('start');
   startButton.innerText = 'Start';
-  board.appendChild(player1);
+  const newPlayerInput = document.createElement('input');
+  newPlayerInput.classList.add('player-name', 'player-select-add-player');
+  const newPlayerButton = document.createElement('button');
+  newPlayerButton.classList.add('new-player');
+  newPlayerButton.innerText = 'Add a Player';
+  board.append(newPlayerInput);
+  board.append(newPlayerButton);
+  board.append(player1);
   board.append(dropdown);
-  board.appendChild(player2);
+  board.append(player2);
   board.append(dropdown.cloneNode(true));
   board.append(startButton);
   return board;
@@ -371,16 +394,10 @@ const addPlayerToPlayerSelection = (playerID, playerName) => {
 }
 
 document.getElementById('new-game').addEventListener('click', e=>selectPlayers());
-document.getElementById('new-player').addEventListener('click',e=>{
-  let name = document.getElementById('player-name');
-  if (name.value) {
-    createPlayer(name.value);
-    name.classList.remove('missing-information');
-  } else {
-    name.classList.add('missing-information');
-  }
-})
 createPlayer('Player 1');
 createPlayer('Player 2');
 createPlayer('Player 3');
-selectPlayers();
+for (var x=0; x<200; x++) {
+  createPlayer(`Hayden${x}`)
+}
+// selectPlayers();

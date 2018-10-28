@@ -1,8 +1,20 @@
+body > div {
+  display: flex;
+}
+
+button {
+  cursor: pointer;
+}
+
 .tic-tac-toe-board {
   display: flex;
   flex-flow: column;
   height: 330px;
   width: 300px;
+  /* border: 1px dotted black; */
+  background-color: whitesmoke;
+  /* background: #8080801a; */
+  
 }
 
 .divider-row {
@@ -74,6 +86,7 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
+  align-content: flex-start;
 }
 
 .winner {
@@ -84,23 +97,29 @@
   background: gold;
 }
 
-table {
+#scoreboard {
   width: 250px;
 }
 
-table,
-td {
+#games + div {
+  margin-left: auto;
+  border-left: 1px solid black;
+}
+
+#scoreboard,
+#scoreboard td {
     border: 1px solid #333;
 }
 
-thead,
-tfoot {
+#scoreboard thead {
     background-color: #333;
     color: #fff;
 }
 
 #new-game {
-  width: 250px;
+  /* width: 250px; */
+  height: 330px;
+  width: 300px;
 }
 
 .banner {
@@ -114,12 +133,23 @@ tfoot {
 }
 
 .player-select-caption {
-  margin: 65px 0px 5px 20px;
+  margin: 30px 0px 5px 20px;
 }
 
 .player-select-dropdown {
   margin: 0px 20px;
 }
+
+.player-select-add-player {
+  margin: 30px 20px 5px 20px;
+}
+
+.new-player {
+  margin: 0px 20px;
+  border: 0px;
+  background: #9f9f9f;
+}
+
 
 .start {
   margin-top: auto;
