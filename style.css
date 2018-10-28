@@ -104,6 +104,13 @@ button {
 #games + div {
   margin-left: auto;
   border-left: 1px solid black;
+  width: 300px;
+  display: flex;
+  height: calc(100vh - 16px);
+}
+
+#games + div.short {
+  width: 20px;
 }
 
 #scoreboard,
@@ -158,4 +165,11 @@ button {
 .missing-information {
   border-color: rgba(245, 12, 12, 0.89);
   background: rgba(245, 12, 12, 0.493);
+}
+
+.horizontal-button {
+  width: 25px;
+  height: 300px;
+  word-wrap: break-word;
+  margin-top: calc(50vh - 150px);
 }

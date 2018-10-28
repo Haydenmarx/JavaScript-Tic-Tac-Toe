@@ -394,6 +394,15 @@ const addPlayerToPlayerSelection = (playerID, playerName) => {
 }
 
 document.getElementById('new-game').addEventListener('click', e=>selectPlayers());
+document.getElementById('scoreboard-info').addEventListener('click', e=>{
+  if (e.target.nodeName === 'BUTTON') {
+    document.getElementById('scoreboard').classList.toggle('invisible');
+    document.getElementById('scoreboard-info').classList.toggle('short');
+    let buttons = document.getElementsByClassName('horizontal-button');
+    buttons[0].classList.toggle('invisible');
+    buttons[1].classList.toggle('invisible');
+  }
+});
 createPlayer('Player 1');
 createPlayer('Player 2');
 createPlayer('Player 3');
