@@ -360,14 +360,26 @@ const generatePlayerSelection = (id) => {
 }
 
 const addPlayerToPlayerSelection = (playerID, playerName) => {
+
   const dropdowns = document.getElementsByClassName('player-select-dropdown');
-  let newSelector = document.createElement('option');
+  const newSelector = document.createElement('option');
   newSelector.value = playerID;
-  newSelector.label = playerName;
-  /* Add players to existing drop downs*/
+  newSelector.innerText = playerName;
+  for (var x=0; x<dropdowns.length; x++) {
+    dropdowns[x].appendChild(newSelector.cloneNode(true));
+  }
 }
 
-document.getElementById('new-game').addEventListener('click',e=>selectPlayers());
+document.getElementById('new-game').addEventListener('click', e=>selectPlayers());
+document.getElementById('new-player').addEventListener('click',e=>{
+  let name = document.getElementById('player-name');
+  if (name.value) {
+    createPlayer(name.value);
+    name.classList.remove('missing-information');
+  } else {
+    name.classList.add('missing-information');
+  }
+})
 createPlayer('Player 1');
 createPlayer('Player 2');
 createPlayer('Player 3');
