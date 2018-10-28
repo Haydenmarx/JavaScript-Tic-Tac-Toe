@@ -263,6 +263,7 @@ const createPlayer = (name) => {
   players[playerID] = {score: 0, O:0, X:0, games:[]};
   players[playerID].name = name;
   addPlayerToScoreBoard(playerID);
+  addPlayerToPlayerSelection(playerID, name);
 }
 
 const updateUserName = (name, playerID) => {
@@ -331,31 +332,42 @@ const generateBoard = (board, player1) => {
 }
 
 const generatePlayerSelection = (id) => {
-  let board = document.createElement('div');
+  const board = document.createElement('div');
   board.id = `tic-tac-toe-board-${id}`;
   board.classList.toggle('tic-tac-toe-board');
-  board.innerHTML = (
-    `
-    <h3 class="player-select-caption">O (Moves First):</h3>
-    <select class="player-select-dropdown">
-        <option value="id0">Player 1</option>
-        <option value="id1">Player 2</option>
-        <option value="id2">Player 3</option>
-    </select>
-    <h3  class="player-select-caption">X (Moves Second):</h3>
-    <select class="player-select-dropdown">
-    <option value="id0">Player 1</option>
-    <option value="id1">Player 2</option>
-    <option value="id2">Player 3</option>
-    </select>
-    <button class="start">Start</button>
-    `
-  );
+  const player1 = document.createElement('h3');
+  player1.classList.add('player-select-caption');
+  player1.innerText = 'O (Moves First):';
+  player2 = player1.cloneNode(true);
+  player2.innerText = 'X (Moves Second):';
+  const dropdown = document.createElement('select');
+  dropdown.classList.add('player-select-dropdown');
+  Object.keys(players).forEach(player=>{
+    const newPlayer = document.createElement('option');
+    newPlayer.value = player;
+    newPlayer.innerText = players[player].name;
+    dropdown.append(newPlayer);
+  })
+  const startButton = document.createElement('button');
+  startButton.classList.add('start');
+  startButton.innerText = 'Start';
+  board.appendChild(player1);
+  board.append(dropdown);
+  board.appendChild(player2);
+  board.append(dropdown.cloneNode(true));
+  board.append(startButton);
   return board;
 }
 
-document.getElementById('new-game').addEventListener('click',e=>selectPlayers());
+const addPlayerToPlayerSelection = (playerID, playerName) => {
+  const dropdowns = document.getElementsByClassName('player-select-dropdown');
+  let newSelector = document.createElement('option');
+  newSelector.value = playerID;
+  newSelector.label = playerName;
+  /* Add players to existing drop downs*/
+}
 
+document.getElementById('new-game').addEventListener('click',e=>selectPlayers());
 createPlayer('Player 1');
 createPlayer('Player 2');
 createPlayer('Player 3');
