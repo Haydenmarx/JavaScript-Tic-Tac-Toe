@@ -256,8 +256,8 @@ const addPlayerToScoreBoard = (playerID) => {
     <tr>
       <td id="name-${playerID}">${players[playerID].name}</td>
       <td id="score-${playerID}">${players[playerID].score}</td>
-      <td id="x-wins-${playerID}">${players[playerID].X}</td>
-      <td id="o-wins-${playerID}">${players[playerID].O}</td>
+      <td id="score-X-wins-${playerID}">${players[playerID].X}</td>
+      <td id="score-O-wins-${playerID}">${players[playerID].O}</td>
     </tr>
     `
   );
@@ -270,7 +270,8 @@ const updateScoreBoard = (winner) => {
   players[winner.player].games.push(winner.board);
   //id01: {name:'O', score:0, O:0, X:0, games:[]},
   document.getElementById(`score-${winner.player}`).innerText = players[winner.player].score;
-  document.getElementById(`${String.toLowerCase(winner.piece)}-wins-${winner.player}`).innerText = players[winner.player][winner.piece];
+  // document.getElementById(`${String.toLowerCase(winner.piece)}-wins-${winner.player}`).innerText = players[winner.player][winner.piece];
+  document.getElementById(`score-${winner.piece}-wins-${winner.player}`).innerText = players[winner.player][winner.piece];
 }
 
 const createPlayer = (name) => {
