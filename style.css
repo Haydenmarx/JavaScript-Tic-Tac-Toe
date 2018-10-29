@@ -4,6 +4,8 @@ body > div {
 
 button {
   cursor: pointer;
+  background-color: #333;
+  color: #fff;
 }
 
 .tic-tac-toe-board {
@@ -104,14 +106,14 @@ button {
 #games + div {
   margin-left: auto;
   /* border-left: 1px solid black; */
-  width: 280px;
+  width: 293px;
   justify-content: space-between;
   display: flex;
   height: calc(100vh - 16px);
 }
 
 #games + div.short {
-  width: 22px;
+  width: 35px;
 }
 
 #scoreboard,
@@ -128,6 +130,7 @@ button {
   /* width: 250px; */
   height: 330px;
   width: 300px;
+  font-size: 5.3em;
 }
 
 .banner {
@@ -154,8 +157,8 @@ button {
 
 .new-player {
   margin: 0px 20px;
-  border: 0px;
-  background: #9f9f9f;
+  /* border: 0px; */
+  /* background: #9f9f9f; */
 }
 
 
@@ -169,9 +172,10 @@ button {
 }
 
 .horizontal-button {
-  width: 22px;
+  width: 35px;
   height: calc(100vh - 16px);
   word-wrap: break-word;
   border: 0px;
+  font-size: 2.2em;
   /* margin-top: calc(50vh - 150px); */
 }
