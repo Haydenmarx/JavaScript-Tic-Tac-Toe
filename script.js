@@ -404,6 +404,12 @@ document.getElementById('scoreboard-info').addEventListener('click', e=>{
     buttons[1].classList.toggle('invisible');
   }
 });
+window.addEventListener('scroll', function(e) {
+  const top = (document.documentElement.scrollTop) + 'px';
+  let horizontalButtons = document.getElementsByClassName('horizontal-button');
+  horizontalButtons[0].style.marginTop = top;
+  horizontalButtons[1].style.marginTop = top;
+});
 createPlayer('Player 1');
 createPlayer('Player 2');
 createPlayer('Player 3');
